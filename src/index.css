@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'GreatVibes';
+  src: url('assets/fonts/GreatVibes-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'AnonymousPro';
+  src: url('assets/fonts/AnonymousPro-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'AnonymousProBold';
+  src: url('assets/fonts/AnonymousPro-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'AnonymousProItalic';
+  src: url('assets/fonts/AnonymousPro-Italic.ttf');
+}
+
+@import "tailwindcss";
+
+@theme {
+  --font-cursive: GreatVibes, "sans-serif";
+  --font-pro: AnonymousPro, "sans-serif";
+  --font-pro-bold: AnonymousProBold, "sans-serif";
+  --font-pro-italic: AnonymousProItalic, "sans-serif";
+  --color-primary: #056010;
+}
