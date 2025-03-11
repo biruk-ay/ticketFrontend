@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import Header from "../../../../componets/header";
 import List from "../componets/List";
 import Create from "../componets/Create";

@@ -21,7 +21,10 @@ class AuthRepository {
     }
 
     public async logout() {
-        return await this.accessClient.execute(new LogoutRequest());
+        localStorage.removeItem("persist:root");
+        localStorage.removeItem("accessToken");
+        const result = await this.accessClient.execute(new LogoutRequest());
+        return result;
     }
 
     public async refresh() {

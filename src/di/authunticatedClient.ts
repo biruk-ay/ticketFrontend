@@ -11,6 +11,7 @@ export default class AuthenticatedProvider {
 		if(this.networkAccess === undefined){
 			this.networkAccess = new AuthenticatedNetworkClient(BASE_URL, GetToken.getAccessToken());
 		}
+		// console.log(GetToken.getAccessToken());
 		return this.networkAccess;
 	}
 

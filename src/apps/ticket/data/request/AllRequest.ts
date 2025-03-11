@@ -2,9 +2,9 @@ import Request from "../../../../lib/request/request"
 
 export default class AllRequest extends Request<string> {
 
-    constructor(id: string) {
+    constructor() {
         super({
-            url: `/ticket/tickets/${id}`,
+            url: '/ticket/tickets/',
             method: "GET",
             data: { }
         })

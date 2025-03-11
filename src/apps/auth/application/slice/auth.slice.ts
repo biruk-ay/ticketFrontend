@@ -20,7 +20,6 @@ export const signup = createAsyncThunk<Omit<AuthState, "isLoggedIn" | "loading" 
     async ({name, email, password, role}, thunkAPI) => {   
       try {
           const response = await authRepository.signup(name, email, password, role) as unknown as AuthState;
-          await localStorage.setItem("accessToken", response.accessToken as string);
           return {
             name: response.name,
             email: response.email,
@@ -40,8 +39,6 @@ export const login = createAsyncThunk<Omit<AuthState, "isLoggedIn" | "loading" |
     async ({email, password}, thunkAPI) => {   
       try {
           const response = await authRepository.login(email, password) as unknown as AuthState;
-          await localStorage.setItem("accessToken", response.token as string);
-          console.log(response.token);
           return {
             name: response.name,
             email: response.email,
@@ -61,12 +58,11 @@ export const logout = createAsyncThunk(
     async (_, { rejectWithValue }) => {   
         try {
             await authRepository.logout();
-            localStorage.getItem("accessToken");
-            localStorage.removeItem("accessToken");
-            
-        } catch {
+        } catch(error) {
+            console.error("Logout failed: ", error);
           return rejectWithValue(null);
       }
+      return null;
   }
 );
 
@@ -135,7 +131,13 @@ export const AuthSlice = createSlice({
             })
             .addCase(logout.fulfilled, (state) => {
                 state.isLoggedIn = false;
+                state.name = null;
+                state.email = null;
                 state.accessToken = null;
+                state.role = null;
+                state.id = null;
+                state.loading = false;   
+                localStorage.removeItem("accessToken");         
             });
     },
 })

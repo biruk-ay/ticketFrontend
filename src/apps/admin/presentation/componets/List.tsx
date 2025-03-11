@@ -1,25 +1,38 @@
-import React, { Component } from "react";
+import { Component } from "react";
+import adminRepository from "../../data/repository/admin.repository";
 
-interface ListProps {
-    onEdit: (component: "Update", id: string) => void;
-}
 
 interface ListState {
     tickets: { id: string; title: string; description: string; status: string }[];
 }
 
-class List extends Component<ListProps, ListState> {
-    constructor(props: ListProps) {
+class List extends Component<ListState> {
+    constructor(props: {}) {
         super(props);
         this.state = {
-            tickets: [
-                { id: "1", title: "Logitech G ProX", description: "Designed with gaming in mind...", status: "Open" },
-                { id: "2", title: "Logitech G ProX", description: "Designed with gaming in mind...", status: "Open" },
-                { id: "3", title: "Logitech G ProX", description: "Designed with gaming in mind...", status: "Open" },
-                { id: "4", title: "Logitech G ProX", description: "Designed with gaming in mind...", status: "Open" },
-            ],
+            tickets: [],
         };
     }
+
+    async componentDidMount() {
+        try {
+            const response = await adminRepository.all();
+            console.log(response);
+            this.setState({ tickets: response.results.map((ticket, index) => ({
+                id: ticket._id,  
+                title: ticket.title,
+                description: ticket.description,
+                status: ticket.status
+            })) });        
+        } catch (error) {
+            console.error("Error fetching tickets:", error);
+        }
+    }
+
+    handleEdit = (id: string) => {
+        window.location.href = `/update/${id}`;
+    };
+
 
     render() {
         return (
@@ -28,7 +41,6 @@ class List extends Component<ListProps, ListState> {
                 <table className="w-full rounded-lg overflow-hidden">
                     <thead>
                         <tr className="text-black border-b-1 border-gray-300 justify-end items-end">
-                            <th className="p-3 text-start font-semibold italic text-white">Title</th>
                             <th className="p-3 text-start font-semibold italic">Title</th>
                             <th className="p-3 text-start font-semibold italic">Description</th>
                             <th className="p-3 text-start font-semibold italic">Status</th>
@@ -37,14 +49,13 @@ class List extends Component<ListProps, ListState> {
                     <tbody>
                         {this.state.tickets.map((ticket) => (
                             <tr key={ticket.id} className="border-b border-gray-300 rounded-2xl font-pro hover:bg-gray-50 transition">
-                                <td className="p-3">{ticket.id}</td>
                                 <td className="p-3">{ticket.title}</td>
                                 <td className="p-3">{ticket.description}</td>
                                 <td className="p-3">{ticket.status}</td>
                                 <td className="p-3">
                                     <button
                                         className="bg-primary font-pro text-white px-5 py-1 rounded-full transition hover:bg-green-900"
-                                        onClick={() => this.props.onEdit("Update", ticket.id)}
+                                        onClick={() => this.handleEdit(ticket.id)}
                                     >
                                         Update
                                     </button>

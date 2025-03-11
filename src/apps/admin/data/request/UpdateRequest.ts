@@ -4,10 +4,11 @@ export default class UpdateRequest extends Request<string> {
 
     constructor(status: string, id: string) {
         super({
-            url: `/admin/tickets/${id}`,
+            url: '/admin/tickets/',
             method: "PUT",
             data: {
-                "status": status
+                "status": status,
+                "id": id
             }
         })
     }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Header from "../../../../componets/header";
 import List from "../componets/List";
 import Update from "../componets/Update";

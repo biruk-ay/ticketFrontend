@@ -6,6 +6,9 @@ export default class LoginRequest extends Request<string> {
         super({
             url: '/auth/login',
             method: "POST",
+            headers: {
+                withCredentials: true
+            },
             data: {
                 "email": email,
                 "password": password

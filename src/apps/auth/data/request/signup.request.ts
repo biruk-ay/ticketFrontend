@@ -1,4 +1,3 @@
-import { BASE_URL } from "../../../../configs/config"
 import Request from "../../../../lib/request/request"
 
 export default class SignupRequest extends Request<string> {

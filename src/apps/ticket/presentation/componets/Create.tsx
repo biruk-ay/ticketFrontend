@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Navigate } from "react-router";
 import ticketRepository from "../../data/repository/ticket.repository";
+import Loading from "../../../../componets/loading";
 interface CreateState {
   title: string;
   description: string;
@@ -14,7 +15,7 @@ class Create extends Component<{}, CreateState> {
   state: CreateState = {
     title: "",
     description: "",
-    status: "Open", // Default status
+    status: "Open",
     loading: false,
     error: null,
     redirectToList: false,
@@ -32,12 +33,9 @@ class Create extends Component<{}, CreateState> {
     const { title, description, status } = this.state;
 
     try {
-      // Call the create function from TicketRepository
       await ticketRepository.create(title, description, status);
-      // On success, set redirectToList to true
       this.setState({ redirectToList: true });
-    } catch (error) {
-      // Handle errors
+    } catch {
       this.setState({ error: "Failed to create ticket. Please try again.", loading: false });
     }
   };
@@ -46,11 +44,11 @@ class Create extends Component<{}, CreateState> {
     const { title, description, status, loading, error, redirectToList } = this.state;
 
     if (redirectToList) {
-      return <Navigate to="/tickets" />;
+      return <Navigate to="/ticket" />;
     }
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <div><Loading /></div>;
     }
 
     return (

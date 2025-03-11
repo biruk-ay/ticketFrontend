@@ -1,62 +1,69 @@
 import React, { Component } from "react";
-
-interface UpdateProps {
-    id: string;
-    onBack: () => void;
-}
+import adminRepository from "../../data/repository/admin.repository";
+import { Link, useParams } from "react-router";
 
 interface UpdateState {
-    name: string;
+    id: string;
+    status: string;
 }
 
-class Update extends Component<UpdateProps, UpdateState> {
-    constructor(props: UpdateProps) {
+function withRouter(Component) {
+    return function WrappedComponent(props) {
+        const params = useParams();
+        console.log("Matched Route ID:", params.id);
+        return <Component {...props} params={params} />;
+    };
+}
+
+class Update extends Component<UpdateState> {
+    constructor(props) {
         super(props);
+        console.log("Update Component Rendered with ID:", this.props.params.id);
         this.state = {
-            name: `User ${props.id}`, 
+            id: this.props.params.id,
+            status: "Open",
         };
     }
 
+
     handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ name: e.target.value });
+        this.setState({ status: e.target.value });
     };
 
-    handleSubmit = (e: React.FormEvent) => {
+    handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(`Updated User ${this.props.id}: ${this.state.name}`);
-        this.props.onBack(); 
+        try {
+            await adminRepository.update(this.state.status, this.state.id);
+            console.log(`Updated Ticket ${this.state.id} to ${this.state.status}`);
+            window.location.href = "/admin";
+        } catch (error) {
+            console.error("Error updating ticket:", error);
+        }
     };
 
     render() {
         return (
-            <div className="w-full p-4 justify-center items-center">
-                <h2 className="text-3xl italic text-center text-primary mt-10 mb-10">Update Ticket</h2>
-                <form onSubmit={this.handleSubmit} className="flex flex-col justify-center items-center">
-                <div className="flex flex-row justify-evenly items-center">
-                    <div className="flex justify-evenly items-center">
-                        <input type="radio" id="Open" name="status" value="Open" className="focus:ring-primary focus:ring-2"/>
-                        <label className="font-pro text-black text-lg mr-5 ml-1.5">Open</label>
+            <div className="w-full p-4 flex flex-col items-center">
+                <h2 className="text-3xl italic text-primary mt-10 mb-10">Update Ticket</h2>
+                <form onSubmit={this.handleSubmit} className="flex flex-col items-center">
+                    <div className="flex gap-5">
+                        <label className="text-lg">
+                            <input type="radio" name="status" value="Open" checked={this.state.status === "Open"} onChange={this.handleChange} /> Open
+                        </label>
+                        <label className="text-lg">
+                            <input type="radio" name="status" value="InProgress" checked={this.state.status === "InProgress"} onChange={this.handleChange} /> In Progress
+                        </label>
+                        <label className="text-lg">
+                            <input type="radio" name="status" value="Closed" checked={this.state.status === "Closed"} onChange={this.handleChange} /> Closed
+                        </label>
                     </div>
-                    <div className="flex items-center">
-                        <input type="radio" id="InProgress" name="status" value="InProgress" className="focus:ring-primary focus:ring-2 ml-5"/>
-                        <label className="font-pro text-black text-lg ml-1.5">InProgress</label>
-                    </div>
-                    <div className="flex items-center">
-                        <input type="radio" id="Closed" name="status" value="Closed" className="focus:ring-primary focus:ring-2 ml-5"/>
-                        <label className="font-pro text-black text-lg ml-1.5">Closed</label>
-                    </div>
-                </div>
-                    <div className="flex">
-                        <button type="submit" className="bg-primary font-pro text-white w-full px-10 py-2 mt-8 rounded-full transition hover:bg-green-900"
-                        >
-                            Update Ticket
-                        </button>
-                        
-                    </div>
+                    <button type="submit" className="bg-primary text-white px-10 py-2 mt-8 rounded-full hover:bg-green-900">
+                        Update Ticket
+                    </button>
                 </form>
             </div>
         );
     }
 }
 
-export default Update;
+export default withRouter(Update);

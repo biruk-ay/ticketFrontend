@@ -6,8 +6,8 @@ class TicketRepository {
 
     private accessClient = AuthenticatedProvider.provideNetworkAccess();
     
-    public async all(id: string) {
-        return await this.accessClient.execute(new AllRequest(id));
+    public async all() {
+        return await this.accessClient.execute(new AllRequest());
     }
 
     public async create(title: string, description: string, status: string) {
