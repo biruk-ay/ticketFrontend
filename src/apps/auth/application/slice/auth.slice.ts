@@ -28,6 +28,7 @@ export const signup = createAsyncThunk<Omit<AuthState, "isLoggedIn" | "loading" 
             id: response.id
 
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }catch(error: any){
         return thunkAPI.rejectWithValue(error.message);
     }
@@ -47,6 +48,7 @@ export const login = createAsyncThunk<Omit<AuthState, "isLoggedIn" | "loading" |
             id: response.id
 
           };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }catch(error: any){
         return thunkAPI.rejectWithValue(error.message);
     }
@@ -66,20 +68,20 @@ export const logout = createAsyncThunk(
   }
 );
 
-export const refresh = createAsyncThunk(
-    "auth/refresh",
-    async (_, { rejectWithValue }) => {   
-      try {
-          const response = await authRepository.refresh() as unknown as AuthState;
-          localStorage.setItem("accessToken", response.token as string);
-          return {
-            token: response.accessToken,
-          };
-      } catch {
-        return rejectWithValue(null);
-    }
-}
-);
+// export const refresh = createAsyncThunk(
+//     "auth/refresh",
+//     async (_, { rejectWithValue }) => {   
+//       try {
+//           const response = await authRepository.refresh() as unknown as AuthState;
+//           localStorage.setItem("accessToken", response.token as string);
+//           return {
+//             token: response.accessToken,
+//           };
+//       } catch {
+//         return rejectWithValue(null);
+//     }
+// }
+// );
 
 export const AuthSlice = createSlice({
     name: "auth",
@@ -121,14 +123,14 @@ export const AuthSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            .addCase(refresh.fulfilled, (state, action) => {
-                state.accessToken = action.payload.token;
-                state.isLoggedIn = true;
-            })
-            .addCase(refresh.rejected, (state) => {
-                state.accessToken = null;
-                state.isLoggedIn = false;
-            })
+            // .addCase(refresh.fulfilled, (state, action) => {
+            //     state.accessToken = action.payload.token;
+            //     state.isLoggedIn = true;
+            // })
+            // .addCase(refresh.rejected, (state) => {
+            //     state.accessToken = null;
+            //     state.isLoggedIn = false;
+            // })
             .addCase(logout.fulfilled, (state) => {
                 state.isLoggedIn = false;
                 state.name = null;

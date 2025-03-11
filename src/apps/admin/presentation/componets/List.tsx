@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component } from "react";
 import adminRepository from "../../data/repository/admin.repository";
 

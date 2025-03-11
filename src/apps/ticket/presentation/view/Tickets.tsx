@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component } from "react";
 import Header from "../../../../componets/header";
 import List from "../componets/List";

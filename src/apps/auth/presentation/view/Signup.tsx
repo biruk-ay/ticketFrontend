@@ -73,17 +73,17 @@ export class Signup extends React.Component {
       <>
         <Header />
         <div className="w-screen h-screen bg-white">
-          <div className="w-full h-full flex flex-row-reverse items-center justify-evenly">
+          <div className="w-full h-full flex flex-col-reverse sm:flex-row-reverse mt-8 sm:mt-0 items-center justify-evenly">
             <form className="w-1/2 flex flex-col items-center justify-center" onSubmit={this.handleSubmit}>
                 <div className="flex text-black text-4xl italic font-pro-italic">
                     Create Account
                 </div>
                 <div className="text-black text-2xl font-pro mt-20 mr-56">Name</div>
-                <input name="name" className="w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2" onChange={this.handleChange} />
+                <input name="name" className="w-full sm:w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2" onChange={this.handleChange} />
                 <div className="text-black text-2xl font-pro mt-6 mr-56">Email</div>
-                <input name="email" className="w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2" onChange={this.handleChange}/>
+                <input name="email" className="w-full sm:w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2" onChange={this.handleChange}/>
                 <div className="text-black text-2xl font-pro mt-6 mr-48">Password</div>
-                <input name="password" className="w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2" onChange={this.handleChange}/>
+                <input name="password" className="w-full sm:w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2" onChange={this.handleChange}/>
                 <div className="text-black text-2xl font-pro mt-6 mr-56">Role</div>
                 <div className="flex flex-row justify-evenly items-center">
                     <div className="flex justify-evenly items-center">
@@ -95,7 +95,7 @@ export class Signup extends React.Component {
                         <label className="font-pro text-black text-lg ml-1.5">Admin</label>
                     </div>
                 </div>
-                <button type="submit" className="w-1/4 h-8 bg-primary text-white text-lg font-pro rounded-3xl mt-10">Create</button>
+                <button type="submit" className="w-full sm:w-1/4 h-8 bg-primary text-white text-lg font-pro rounded-3xl mt-10">Create</button>
             </form>
             <div className="w-1/2 flex flex-col items-center justify-center">
                 <div className="font-cursive font-extrabold text-8xl text-primary">Tickets</div>

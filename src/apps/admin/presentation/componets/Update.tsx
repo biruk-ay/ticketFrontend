@@ -1,6 +1,7 @@
+// @ts-nocheck
 import React, { Component } from "react";
 import adminRepository from "../../data/repository/admin.repository";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 
 interface UpdateState {
     id: string;

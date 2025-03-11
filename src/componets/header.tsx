@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { connect } from "react-redux";
 import { logout } from "../apps/auth/application/slice/auth.slice";

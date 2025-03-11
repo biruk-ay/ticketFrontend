@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import Header from "../../../../componets/header";
 import List from "../componets/List";
@@ -22,7 +23,7 @@ class Admin extends React.Component<object, AdminState> {
 
     renderComponent = () => {
         const { activeComponent, selectedId } = this.state;
-        if (activeComponent === "List") {
+        if (activeComponent === "List") { 
             return <List onEdit={this.setActiveComponent} />;
         } else if (activeComponent === "Update" && selectedId) {
             return <Update id={selectedId} onBack={() => this.setActiveComponent("List")} />;

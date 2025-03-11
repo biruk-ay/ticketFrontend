@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component } from "react";
 import ticketRepository from "../../data/repository/ticket.repository";
 

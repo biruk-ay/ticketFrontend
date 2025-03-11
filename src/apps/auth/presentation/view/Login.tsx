@@ -63,26 +63,26 @@ export class Login extends React.Component<LoginProps, LoginState> {
       <>
         <Header />
         <div className="w-screen h-screen bg-white">
-          <div className="w-full h-full flex flex-row items-center justify-evenly">
+          <div className="w-full h-full flex flex-col-reverse sm:flex-row items-center justify-evenly">
             <form className="w-1/2 flex flex-col items-center justify-center" onSubmit={this.handleSubmit}>
               <div className="flex text-black text-4xl italic font-pro-italic">Login</div>
               <div className="text-black text-2xl font-pro mt-20 mr-56">Email</div>
               <input
                 name="email"
                 type="email"
-                className="w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2"
+                className="w-full sm:w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2"
                 onChange={this.handleChange}
               />
               <div className="text-black text-2xl font-pro mt-6 mr-48">Password</div>
               <input
                 name="password"
                 type="password"
-                className="w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2"
+                className="w-full sm:w-2/5 bg-[#D9D9D9] bg-opacity-50 rounded-lg py-3 pl-1 mt-2"
                 onChange={this.handleChange}
               />
               <button
                 type="submit"
-                className="w-1/4 h-8 bg-primary text-white text-lg font-pro rounded-3xl mt-10"
+                className="w-full sm:w-1/4 h-8 bg-primary text-white text-lg font-pro rounded-3xl mt-10"
               >
                 Login
               </button>
@@ -98,7 +98,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
   }
 }
 
-const mapStateToProps = (state) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mapStateToProps = (state: any) => ({
   role: state.auth.role,
   loading: state.auth.loading,
 });

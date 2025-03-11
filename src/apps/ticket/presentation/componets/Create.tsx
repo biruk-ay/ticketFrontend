@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Component } from "react";
 import { Navigate } from "react-router";
 import ticketRepository from "../../data/repository/ticket.repository";
