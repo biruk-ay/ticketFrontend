@@ -1,41 +1,48 @@
-// @ts-nocheck
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import adminRepository from "../../data/repository/admin.repository";
+import Loading from "../../../../componets/loading";
 
-
-interface ListState {
-    tickets: { id: string; title: string; description: string; status: string }[];
+interface Ticket {
+    _id: string;        
+    title: string;
+    description: string;
+    status: string;
 }
 
-class List extends Component<ListState> {
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            tickets: [],
-        };
-    }
+interface TicketResponse {
+    results: Ticket[];
+}
 
-    async componentDidMount() {
-        try {
-            const response = await adminRepository.all();
-            console.log(response);
-            this.setState({ tickets: response.results.map((ticket, index) => ({
-                id: ticket._id,  
-                title: ticket.title,
-                description: ticket.description,
-                status: ticket.status
-            })) });        
-        } catch (error) {
-            console.error("Error fetching tickets:", error);
-        }
-    }
 
-    handleEdit = (id: string) => {
+const List = () => {
+
+    const [ loading, isLoading ] = useState(false);
+    const [ tickets, setTickets ] = useState<Ticket[]>([]) 
+    const handleEdit = (id: string) => {
         window.location.href = `/update/${id}`;
     };
 
+    useEffect(() => {
+        const fetchTickets = async () => {
+            isLoading(true);
+            try {
+                const response = await adminRepository.all() as unknown as TicketResponse;
+                console.log("response : ", response.results);
+                setTickets(response.results)
+            } catch {
+                console.log("Error while fetching tickets");
+            } finally {
+                isLoading(false)
+            }
 
-    render() {
+        };
+        fetchTickets();
+    }, [])
+
+    if(loading) {
+        return <Loading />
+    }
+    
         return (
             <div className="w-full p-6">
                 <h2 className="text-3xl italic text-center text-primary mt-10 mb-6">List Tickets</h2>
@@ -48,15 +55,15 @@ class List extends Component<ListState> {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.tickets.map((ticket) => (
-                            <tr key={ticket.id} className="border-b border-gray-300 rounded-2xl font-pro hover:bg-gray-50 transition">
+                        {tickets.map((ticket) => (
+                            <tr key={ticket._id} className="border-b border-gray-300 rounded-2xl font-pro hover:bg-gray-50 transition">
                                 <td className="p-3">{ticket.title}</td>
                                 <td className="p-3">{ticket.description}</td>
                                 <td className="p-3">{ticket.status}</td>
                                 <td className="p-3">
                                     <button
                                         className="bg-primary font-pro text-white px-5 py-1 rounded-full transition hover:bg-green-900"
-                                        onClick={() => this.handleEdit(ticket.id)}
+                                        onClick={() => handleEdit(ticket._id)}
                                     >
                                         Update
                                     </button>
@@ -67,7 +74,9 @@ class List extends Component<ListState> {
                 </table>
             </div>
         );
-    }
 }
+
+
+
 
 export default List;

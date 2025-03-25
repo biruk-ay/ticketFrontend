@@ -149,3 +149,4 @@ export default AuthSlice.reducer;
 export const selectUserEmail = (state: RootState) => state.auth.email;
 export const selectUserName = (state: RootState) => state.auth.name;
 export const selectUserRole = (state: RootState) => state.auth.role;
+export const selectLoading = (state: RootState) => state.auth.loading;

@@ -36,8 +36,8 @@ export default class AuthenticatedNetworkClient extends NetworkClient{
 				return response;
 			},
 			async (error) => {
-				const originalRequest = error.config;
 		
+				const originalRequest = error.config;
 				if (error.response?.status === 403 && !originalRequest._retry) {
 					if (!this.isRefreshing) {
 						this.isRefreshing = true;
