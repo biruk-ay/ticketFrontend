@@ -11,7 +11,7 @@ const Header = () => {
   const handleLogout = async (evt: React.FormEvent) => {
     evt.preventDefault();
     await dispatch(logout());
-    navigator('/login')
+    navigator('/')
   }
   return (
       <header className="flex bg-white w-full fixed top-0 left-0 p-3 box-border">

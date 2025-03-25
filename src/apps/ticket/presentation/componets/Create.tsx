@@ -12,7 +12,7 @@ interface FormElements extends HTMLFormControlsCollection {
 interface TicketFormElements extends HTMLFormElement {
   readonly elements: FormElements
 }
- 
+
 
 const Create = () => {
   const [ loading, isLoading ] = useState(false);
