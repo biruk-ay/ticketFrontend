@@ -44,7 +44,6 @@ const List = () => {
             <table className="w-full rounded-lg overflow-hidden">
                 <thead>
                     <tr className="text-black border-b-1 border-gray-300 justify-end items-end">
-                        <th className="p-3 text-start font-semibold italic">No</th>
                         <th className="p-3 text-start font-semibold italic">Title</th>
                         <th className="p-3 text-start font-semibold italic">Description</th>
                         <th className="p-3 text-start font-semibold italic">Status</th>

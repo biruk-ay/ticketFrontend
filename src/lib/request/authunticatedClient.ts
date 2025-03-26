@@ -4,70 +4,82 @@ import { BASE_URL } from "../../configs/config";
 
 export default class AuthenticatedNetworkClient extends NetworkClient{
 
-	private token: string;
 	private isRefreshing = false;
 	private refreshSubscribers : ((token: string) => void)[] = [];
-	
+	private tokenProvider: () => string | null;
 
 	constructor(
 		baseUrl: string,
-		token: string
+		tokenProvider: () => string | null
 	){
 		super(baseUrl);
-		this.token = token;
+		this.tokenProvider = tokenProvider;
+	}
+
+	private get token() {
+		return this.tokenProvider();
 	}
 
 	protected onCreateClient(baseUrl: string): AxiosInstance {
-		console.log(this.token);
+		console.log("AutunticatedClient token: ", this.token);
 		const instance = axios.create({
-			baseURL: baseUrl,
-			withCredentials: true,	
-			headers: {
-				"Authorization": `Token ${this.token}`
-			}
+			baseURL: baseUrl
 		});
 		
-		instance.interceptors.response.use(
-			(response) => {
-				if (response.data.token) {
-					this.token = response.data.token;
-					localStorage.setItem("accessToken", this.token);
-				}
-				return response;
-			},
-			async (error) => {
+		instance.interceptors.request.use(
+            (config) => {
+                const latestToken = this.tokenProvider();
+                if (latestToken) {
+                    config.headers["Authorization"] = `Token ${latestToken}`;
+                }
+                console.log("AuthenticatedClient using token:", latestToken);
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
+            }
+        );
+		// instance.interceptors.response.use(
+		// 	(response) => {
+		// 		if (response.data.token) {
+		// 			this.token = response.data.token;
+		// 			localStorage.setItem("accessToken", this.token);
+		// 		}
+		// 		return response;
+		// 	},
+		// 	async (error) => {
 		
-				const originalRequest = error.config;
-				if (error.response?.status === 403 && !originalRequest._retry) {
-					if (!this.isRefreshing) {
-						this.isRefreshing = true;
-						try {
-							const newToken = await this.refreshToken();
-							console.log("Token before change: ", this.token);
-							this.token = newToken;
-							console.log("Token Changed: ", newToken );
-							localStorage.setItem("accessToken", this.token);
-							this.refreshSubscribers.forEach((cb) => cb(newToken));
-							this.refreshSubscribers = [];
-						} catch (refreshError) {
-							return Promise.reject(refreshError);
-						} finally {
-							this.isRefreshing = false;
-						}
-					}
+		// 		const originalRequest = error.config;
+		// 		if (error.response?.status === 403 && !originalRequest._retry) {
+		// 			if (!this.isRefreshing) {
+		// 				this.isRefreshing = true;
+		// 				try {
+		// 					const newToken = await this.refreshToken();
+		// 					console.log("Token before change: ", this.token);
+		// 					this.token = newToken;
+		// 					console.log("Token Changed: ", newToken );
+		// 					localStorage.setItem("accessToken", this.token);
+		// 					this.refreshSubscribers.forEach((cb) => cb(newToken));
+		// 					this.refreshSubscribers = [];
+		// 				} catch (refreshError) {
+		// 					return Promise.reject(refreshError);
+		// 				} finally {
+		// 					this.isRefreshing = false;
+		// 				}
+		// 			}
 		
-					return new Promise((resolve) => {
-						this.refreshSubscribers.push((token: string) => {
-							originalRequest._retry = true;
-							originalRequest.headers.Authorization = `Bearer ${token}`;
-							resolve(instance(originalRequest));
-						});
-					});
-				}
+		// 			return new Promise((resolve) => {
+		// 				this.refreshSubscribers.push((token: string) => {
+		// 					originalRequest._retry = true;
+		// 					originalRequest.headers.Authorization = `Bearer ${token}`;
+		// 					resolve(instance(originalRequest));
+		// 				});
+		// 			});
+		// 		}
 		
-				return Promise.reject(error);
-			}
-		);
+		// 		return Promise.reject(error);
+		// 	}
+		// );
 		
 		return instance;
 	}

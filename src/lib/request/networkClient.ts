@@ -14,7 +14,6 @@ export default class NetworkClient{
 	protected onCreateClient(baseUrl: string): AxiosInstance{
 		return axios.create({
 			baseURL: baseUrl,
-			withCredentials: true,
 		});
 	}
 
@@ -28,10 +27,6 @@ export default class NetworkClient{
 	async execute<T>(request: Request<T>): Promise<T>{
 		console.log("Axios request config before sending:", request.config); 
 		const response: AxiosResponse = await this.getClient()(request.config);
-		if(response.data.token) {
-			localStorage.setItem("accessToken", response.data.token);
-
-		}
 		
 		if(response.status >= 400){
 			throw new ApiException(response.status, response.data);

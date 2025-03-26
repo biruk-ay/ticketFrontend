@@ -5,7 +5,7 @@ import Admin from './apps/admin/presentation/view/Admin';
 import Ticket from './apps/ticket/presentation/view/Tickets';
 import Signup from './apps/auth/presentation/view/Signup';
 import Update from './apps/admin/presentation/componets/Update';
-import { Landing } from './componets/landing';
+import Landing from './componets/landing';
 import ProtectedRoute from './componets/protect';
 
 function App() {

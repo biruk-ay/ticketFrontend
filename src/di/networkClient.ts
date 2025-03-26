@@ -3,7 +3,7 @@ import { BASE_URL } from "../configs/config";
 
 export default class NetworkProvider {
 
-    public static networkClient: NetworkClient;
+    public static networkClient?: NetworkClient;
 
     public static provideNetworkClient(): NetworkClient{
 		if(this.networkClient === undefined){
@@ -12,4 +12,7 @@ export default class NetworkProvider {
 		return this.networkClient;
 	}
 
+	public static discard() {
+		this.networkClient = undefined;
+	}
 }

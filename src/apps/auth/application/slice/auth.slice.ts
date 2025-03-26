@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import AuthState from "../state/auth.state";
+import AuthState, { AuthResponse } from "../state/auth.state";
 import authRepository from "../../data/repository/auth.repository";
 import type { RootState } from "../../../../store/store";
 const initialState: AuthState = {
@@ -7,7 +7,7 @@ const initialState: AuthState = {
     isLoggedIn: false,
     name: null,
     email:  null,
-    accessToken: null,
+    token: null,
     role: null,
     id: null,
     loading: false,
@@ -23,7 +23,7 @@ export const signup = createAsyncThunk<Omit<AuthState, "isLoggedIn" | "loading" 
           return {
             name: response.name,
             email: response.email,
-            token: response.accessToken,
+            token: response.token,
             role: response.role,
             id: response.id
 
@@ -39,11 +39,11 @@ export const login = createAsyncThunk<Omit<AuthState, "isLoggedIn" | "loading" |
     "auth/login",
     async ({email, password}, thunkAPI) => {   
       try {
-          const response = await authRepository.login(email, password) as unknown as AuthState;
+          const response = await authRepository.login(email, password) as AuthResponse;
           return {
             name: response.name,
             email: response.email,
-            token: response.accessToken,
+            token: response.token,
             role: response.role,
             id: response.id
 
@@ -98,7 +98,7 @@ export const AuthSlice = createSlice({
                 state.loading = false;
                 state.name = action.payload.name;
                 state.email = action.payload.email;
-                state.accessToken = action.payload.accessToken;
+                state.token = action.payload.token;
                 state.role = action.payload?.role || null;
                 state.id = action.payload.id;
             })
@@ -114,7 +114,7 @@ export const AuthSlice = createSlice({
                 state.isLoggedIn = true;
                 state.name = action.payload.name;
                 state.email = action.payload.email;
-                state.accessToken = action.payload.accessToken;
+                state.token = action.payload.token;
                 state.role = action.payload.role;
                 state.id = action.payload.id;
                 state.loading = false;
@@ -135,11 +135,10 @@ export const AuthSlice = createSlice({
                 state.isLoggedIn = false;
                 state.name = null;
                 state.email = null;
-                state.accessToken = null;
+                state.token = null;
                 state.role = null;
                 state.id = null;
                 state.loading = false;   
-                localStorage.removeItem("accessToken");         
             });
     },
 })
