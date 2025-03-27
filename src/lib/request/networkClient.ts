@@ -13,7 +13,7 @@ export default class NetworkClient{
 
 	protected onCreateClient(baseUrl: string): AxiosInstance{
 		return axios.create({
-			baseURL: baseUrl,
+			baseURL: baseUrl
 		});
 	}
 

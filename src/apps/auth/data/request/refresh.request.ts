@@ -6,9 +6,7 @@ export default class RefreshRequest extends Request<string> {
         super({
             url: '/auth/refresh',
             method: "POST",
-            headers: {
-                withCredentials: true
-            },
+            withCredentials: true,
             data: {}
         })
     }
